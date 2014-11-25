@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>新浪微博登陆测试</title>
+</head>
+<body>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+	$.ajax({
+		url:'http://t.sina.com.cn/ajaxlogin.php?framelogin=0&callback=?&retcode=0',
+		dataType:'jsonp',
+		success:function(data){  
+			alert(data.userinfo.userid);
+		}
+	});
+</script>
+</body>
+</html>
