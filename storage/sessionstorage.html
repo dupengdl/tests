@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <title>Page visits(session storage)</title>
+    <style></style>
+</head>
+<body>
+    <div id="visits"></div>
+    <a href="sessionstorage2.html">Go to next page</a>
+    <script>
+        function init(){
+            var visitsDiv = document.getElementById('visits');
+            if(window.sessionStorage){
+                var visits;
+                if(sessionStorage.visits){
+                    visits = parseInt(sessionStorage.getItem('visits'));
+                    visits++;
+                }else{
+                    visits = 1;
+                }
+                sessionStorage.setItem('visits', visits);
+                visitsDiv.innerHTML = 'Session page visits:' + visits;
+            }else{
+                visitsDiv = 'Sessionstorage is not available';
+            }
+        }
+        window.addEventListener('load', init, false);
+    </script>
+</body>
+</html>

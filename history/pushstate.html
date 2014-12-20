@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>charpter9</title>
+    <script>
+        //init button handler
+        function init() {
+            var btn = document.getElementById('nextExhibit');
+            btn.addEventListener("click", nextExhibit, false);
+            window.addEventListener('popstate', popState, false);
+        }
+        function popState(evt) {
+            console.log(evt);
+            var state = evt.state;
+            if (state && state.name) {
+                document.getElementById('exhibit').innerHTML = 'At the ' + state.name + '.';
+                document.title = state.title;
+            } else {
+                document.getElementById('exhibit').innerHTML = 'At the Zoo entrance';
+                document.title = 'charpter9';
+            }
+        }
+        function nextExhibit() {
+            if (typeof history.pushState !== "undefined") {
+                history.pushState({name: 'Meerkats', title: 'Meerkats exhibit'}, 'Meerkats exhibit', './meerkats');
+                document.getElementById('exhibit').innerHTML = 'At the Meerkats.';
+                document.title = 'Meerkats exhibit';
+            } else {
+                alert('History API is not supported!');
+            }
+        }
+        window.addEventListener('load', init, false);
+    </script>
+</head>
+<body>
+<div id="exhibit">Your are at the Zoo entrance.</div>
+<button id="nextExhibit">visit the Meerkats</button>
+</body>
+</html>
