@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Write file to file system test</title>
+    <style></style>
+</head>
+<body>
+    <input id="emailAddress" type="email" />
+    <button onclick="fileAction('write');">Add Email</button>
+    <button onclick="fileAction('read');">Read Emails</button>
+    <button onclick="fileAction('remove');">Remove file</button>
+    <br/>
+    <br/>
+    <div id="emailList"></div>
+    <script>
+        //file API error handler
+        function fileErrorHandler(e){
+            var msg = '';
+            switch (e.code) {
+                case FileError.NOT_FOUND_ERR:
+                    msg = 'File or dir not found.';
+                    break;
+                case FileError.SECURITY_ERR:
+                    msg = 'Security issue found.';
+                    break;
+                case FileError.NOT_READABLE_ERR:
+                    msg = 'File or dir cannot be read.';
+                    break;
+                case FileError.ENCODING_ERR:
+                    msg = 'Address of file or dir malformed.';
+                    break;
+                case FileError.NO_MODIFICATION_ALLOWED_ERR:
+                    msg = 'File or dir cannot be modified.';
+                    break;
+                case FileError.INVALID_STATE_ERR:
+                    msg = 'File or dir state error.';
+                    break;
+                case FileError.SYNTAX_ERR:
+                    msg = 'Syntax error with writing to file.';
+                    break;
+                case FileError.INVALID_MODIFICATION_ERR:
+                    msg = 'Modification requested is invalid';
+                    break;
+                case FileError.QUOTA_EXCEEDED_ERR:
+                    msg = 'Not enough space in storage quota remains.';
+                    break;
+                case FileError.TYPE_MISMATCH_ERR:
+                    msg = 'Wrong type for file or dir';
+                    break;
+                case FileError.PATH_EXISTS_ERR:
+                    msg = 'Path already exists.';
+                    break;
+                default:
+                    msg = 'Unknown file API error.';
+                    break;
+            };
+            console.log("File API error: " + msg);
+        }
+        //function to get file system and dispatch action
+        function fileAction(actionType){
+            var fileName = "HTML5FileText.txt";
+            //begin async process working with the file system
+            window.webkitRequestFileSystem(window.PERSISTENT, 1024*1024, function(fs){
+                //retrieve a ref to the file or create the file if not present
+                fs.root.getFile(fileName, {create:true}, function(entry){
+                    switch (actionType){
+                        case 'write':
+                            writeToFile(entry);
+                            break;
+                        case 'read':
+                            readFromFile(entry);
+                            break;
+                        case 'remove':
+                            removeFile(entry);
+                            break;
+                    }
+                }, fileErrorHandler);
+            }, fileErrorHandler);
+        }
+        //write to file
+        function writeToFile(entry){
+            entry.createWriter(function(writer){
+                writer.onwriteend = function(e){
+                    console.log("Write to file successful.");
+                    readFromFile(entry);
+                };
+                writer.onerror = function(e){
+                    console.log("Write to file failed: " + e.toString());
+                };
+                var emailToAdd = document.getElementById("emailAddress").value + "<br>";
+                var blob = new Blob([emailToAdd], {type: "text/plain"});
+
+                //Seek the end of the file and add the blob
+                writer.seek(writer.length);
+                writer.write(blob);
+            }, fileErrorHandler);
+        }
+        //read from file
+        function readFromFile(entry){
+            entry.file(function(file){
+                var reader = new FileReader();
+                reader.onloadend = function(){
+                    var emailDiv = document.getElementById("emailList");
+                    emailDiv.innerHTML = this.result;
+                };
+                reader.readAsText(file);
+            }, fileErrorHandler);
+        }
+        //remove file
+        function removeFile(entry){
+            entry.remove(function(){
+                console.log("File removed");
+            }, fileErrorHandler);
+        }
+        //read from file by default
+        window.addEventListener('load', fileAction('read'), false);
+    </script>
+</body>
+</html>

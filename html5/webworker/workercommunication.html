@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title>Worker cmmunication</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style></style>
+</head>
+<body>
+    <p>Enter a text message to the worker thread</p>
+    <input id="inputForWorker" type="text"/>
+    <button id="btnPost">Send to worker</button>
+    <section id="workerResponse"></section>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+        //set up environment
+        var worker = new Worker("msgWorker.js");
+        worker.onmessage = function(e){
+            var msgData = e.data;
+            switch (msgData.msgType){
+                case 'MSG':
+                    $("#workerResponse").html("Worker sent: " + msgData.msg);
+                    break;
+                case 'ERR':
+                    alert("Error from workder: " + msgData.msg);
+                    break;
+            }
+        };
+        worker.onerror = function(e){
+            alert("Error from workder: " + e.message);
+        };
+        function postToWorker(){
+            worker.postMessage($("#inputForWorker").val())
+        }
+        $(document).ready(function(){
+            $("#btnPost").click(postToWorker);
+        });
+    </script>
+</body>
+</html>

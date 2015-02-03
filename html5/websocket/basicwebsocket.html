@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title>Web socket</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style></style>
+</head>
+<body>
+    <div id="main">
+        <input id="msg" type="text"/>
+        <button id="btnSend">Send message</button>
+        <button id="btnClose">Close connection</button>
+    </div>
+    <div id="wsState"></div>
+    <div id="messages"></div>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+        //set up environment
+        var ws = null,
+            wsUri = 'ws://echo.websocket.org/';
+        function init(){
+            $("#btnSend").click(postMessage);
+            $("#btnClose").click(closeWs);
+            updateStatus('init websocket connection');
+            ws = new WebSocket(wsUri);
+
+            ws.onopen = function(e){
+                console.log('WebSocket connection opened');
+                updateStatus('connection opened');
+            };
+            ws.onmessage = function(e){
+                console.log('Received message: ' + e.data);
+                updateStatus('message received: ' + e.data);
+                $('#messages').append(e.data + "<br/>");
+            };
+            ws.onclose = function(e){
+                console.log('WebSocket connection error: ' + e.data);
+                updateStatus('error: ' + e.data);
+            };
+            ws.onerror = function(e){
+                console.log('WebSocket connection closed');
+                updateStatus('connection closed');
+            };
+        }
+        function postMessage(){
+            var msg = $('#msg').val();
+            console.log('sending ws message: ' + msg);
+            updateStatus('sending message: ' + msg);
+            ws.send(msg);
+        }
+        function closeWs(){
+            console.log('disconnecting ws');
+            updateStatus('disconnected');
+            ws.close();
+        }
+        function updateStatus(msg){
+            $('#wsState').html(msg);
+        }
+        $(document).ready(init);
+    </script>
+</body>
+</html>

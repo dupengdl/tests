@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Bubble Level test</title>
+    <style>
+        canvas {position: absolute;left: 100px;top: 150px;height: 100px;width: 100px;}
+    </style>
+</head>
+<body>
+    <h1>Bubble level</h1>
+    <canvas id="background">
+        The bubble level background.
+    </canvas>
+    <canvas id="bubble">
+        The bubble which moves to show the level.
+    </canvas>
+    <canvas id="circle">
+        The overlaid circles to show the center of the level.
+    </canvas>
+    <br/>
+    Beta value: <span id="betaValue"></span><br/>
+    Gamma value: <span id="gammaValue"></span>
+    <script>
+        //canvas and context ref variables
+        var cvsBackground,
+            ctxBackground;
+        var cvsBubble,
+            ctxBubble,
+            cvsCircle,
+            ctxCircle;
+
+        //variable for beta and gamma value
+        var tempBeta = 0,
+            tempGamma = 0;
+        var canvasX,
+            vanvasY,
+            canvasXCenter,
+            vanvasYCenter;
+
+        function init(){
+            cvsBackground = document.getElementById("background");
+            ctxBackground = cvsBackground.getContext("2d");
+            cvsBubble = document.getElementById("bubble");
+            ctxBubble = cvsBackground.getContext("2d");
+            cvsCircle = document.getElementById("circle");
+            ctxCircle = cvsBackground.getContext("2d");
+
+            //set the canvas coords and center coords
+            canvasX = parseInt(cvsBackground.offsetLeft);
+            canvasY = parseInt(cvsBackground.offsetTop);
+            canvasXCenter = parseInt(cvsBackground.width/2);
+            canvasYCenter = parseInt(cvsBackground.height/2);
+
+            //draw the bubble level background
+            ctxBackground.fillStyle = "#0c0";
+            ctxBackground.beginPath();
+            ctxBackground.arc(canvasXCenter, canvasYCenter, 50, 0, Math.PI*2, true);
+            ctxBackground.closePath();
+            ctxBackground.fill();
+
+            //drwa the bubble
+            ctxBubble.fillStyle = "#0ff";
+            ctxBubble.beginPath();
+            ctxBubble.arc(canvasXCenter, canvasYCenter, 10, 0, Math.PI*2, true);
+            ctxBubble.closePath();
+            ctxBubble.fill();
+
+            //draw the center circle to designate level
+            ctxCircle.strokeStyle = "#fff";
+            ctxCircle.lineWidth = "5";
+            ctxCircle.beginPath();
+            ctxCircle.arc(canvasXCenter, canvasYCenter, 20, 0, Math.PI*2, true);
+            ctxCircle.closePath();
+            ctxCircle.stroke();
+
+            //add eventlistener for deviceorientation events
+            window.addEventListener("deviceorientation", function(event){
+                if(parseInt(event.beta)!=tempBeta||parseInt(event.gamma)!=tempGamma){
+                    //set new beta, gamma
+                    tempBeta = parseInt(event.beta);
+                    tempGamma = parseInt(event.gamma);
+
+                    var adjX = 0,
+                        adjY = 0,
+                        adjFactor = 3,
+                        adjMax = 40;
+
+                    if(tempBeta*adjFactor > adjMax){
+                        adjY = -adjMax;
+                    }else if(tempBeta*adjFactor < -adjMax){
+                        adjY = adjMax;
+                    }else{
+                        adjY = tempBeta*adjFactor * -1;
+                    }
+                    if(tempGamma*adjFactor > adjMax){
+                        adjX = -adjMax;
+                    }else if(tempGamma*adjFactor < -adjMax){
+                        adjX = adjMax;
+                    }else{
+                        adjX = tempGamma*adjFactor * -1;
+                    }
+
+                    //move the bubble to new position
+                    cvsBubble.style.left = canvasX + adjX + "px";
+                    cvsBubble.style.top = canvasY + adjY + "px";
+
+                    //display instant beta and gamma value
+                    var spanBeta = document.getElementById("betaValue");
+                    var spanGamma = document.getElementById("gammaValue");
+                    spanBeta.innerHTML = tempBeta;
+                    spanGamma.innerHTML = tempGamma;
+                }
+            }, true);
+        }
+        window.addEventListener('load', init, false);
+    </script>
+</body>
+</html>
