@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Bubble Level test</title>
     <style>
-        canvas {position: absolute;left: 100px;top: 150px;height: 100px;width: 100px;}
+        canvas {position: absolute;left: 100px;top: 150px;height: 100px;}
     </style>
 </head>
 <body>
     <h1>Bubble level</h1>
+
+    Beta value: <span id="betaValue"></span><br/>
+    Gamma value: <span id="gammaValue"></span><br/>
+
     <canvas id="background">
         The bubble level background.
     </canvas>
@@ -19,9 +23,6 @@
     <canvas id="circle">
         The overlaid circles to show the center of the level.
     </canvas>
-    <br/>
-    Beta value: <span id="betaValue"></span><br/>
-    Gamma value: <span id="gammaValue"></span>
     <script>
         //canvas and context ref variables
         var cvsBackground,
@@ -43,9 +44,9 @@
             cvsBackground = document.getElementById("background");
             ctxBackground = cvsBackground.getContext("2d");
             cvsBubble = document.getElementById("bubble");
-            ctxBubble = cvsBackground.getContext("2d");
+            ctxBubble = cvsBubble.getContext("2d");
             cvsCircle = document.getElementById("circle");
-            ctxCircle = cvsBackground.getContext("2d");
+            ctxCircle = cvsCircle.getContext("2d");
 
             //set the canvas coords and center coords
             canvasX = parseInt(cvsBackground.offsetLeft);
@@ -78,15 +79,16 @@
             //add eventlistener for deviceorientation events
             window.addEventListener("deviceorientation", function(event){
                 if(parseInt(event.beta)!=tempBeta||parseInt(event.gamma)!=tempGamma){
-                    //set new beta, gamma
-                    tempBeta = parseInt(event.beta);
-                    tempGamma = parseInt(event.gamma);
+                    //set new beta, gamma, fixed double to 1 decimal float
+                    tempBeta = Math.round(parseFloat(event.beta)*10)/10;
+                    tempGamma = Math.round(parseFloat(event.gamma)*10)/10;
 
                     var adjX = 0,
                         adjY = 0,
-                        adjFactor = 3,
-                        adjMax = 40;
+                        adjFactor = 3,   //scale factor for bubble movement
+                        adjMax = 90;     //maximum adjustment for bubble
 
+                    //adjust position to accelerate the bubble position change
                     if(tempBeta*adjFactor > adjMax){
                         adjY = -adjMax;
                     }else if(tempBeta*adjFactor < -adjMax){
