@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title>Web worker thread test</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style></style>
+</head>
+<body>
+    <p>Computing <output id="result"></output></p>
+    <button id="btnTimeStamp">Time Stamp</button>
+    <button id="btnTerminate">Terminate Worker</button>
+    <section id="timeLog"></section>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+        //set up environment
+        var worker = null;
+        function startWorkerThread(){
+            $("#btnTimeStamp").click(getTimeStamp);
+            $("#btnTerminate").click(terminateWorker);
+            worker = new Worker("calcWorker.js");
+            worker.onmessage = function(e){
+                $("#result").text(e.data);
+            }
+        }
+        function terminateWorker(){
+            worker.terminate();
+        }
+        function getTimeStamp(){
+            $("#timeLog").append(new Date() + "<br/>");
+        }
+        $(document).ready(startWorkerThread);
+    </script>
+</body>
+</html>

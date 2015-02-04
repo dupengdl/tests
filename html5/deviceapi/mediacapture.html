@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Media capture test</title>
+    <style></style>
+</head>
+<body>
+    <h2>Media Capture - Camera</h2>
+    <input type="file" capture="camera" accept="image/*;capture=camera" onchange="handleCapture(this.files)"/>
+    <div id="thumbnails"></div>
+    <script>
+        //function to handle media capture
+        function handleCapture(files){
+            var imageType = /image.*/;
+            //loop through any files provided
+            for(var i=0; i<files.length; i++){
+                var file = files[i];
+                //check if file is an image
+                if(file.type.match(imageType)){
+                    //load the image element with the contents of the file
+                    var reader = new FileReader();
+                    reader.onload = function (e){
+                        //create new image element
+                        var img = document.createElement("img");
+                        img.classList.add("obj");
+                        img.file = file;
+                        img.style.maxHeight = "100px";
+                        img.style.maxWidth = "100px";
+                        img.src = e.target.result;
+                        //append the image element to thumbnail area
+                        var thumbnails = document.getElementById("thumbnails");
+                        thumbnails.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title>IndexedDB</title>
+    <style></style>
+</head>
+<body>
+    <div id="main"></div>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+        var myDB={
+            name:'test',
+            version:1,
+            db:null
+        };
+        function openDB (name,version) {
+            var version=version || 1;
+            var request=window.indexedDB.open(name,version);
+            request.onerror=function(e){
+                console.log(e.currentTarget.error.message);
+            };
+            request.onsuccess=function(e){
+                myDB.db=e.target.result;
+                //addData(myDB.db, 'students');
+            };
+            request.onupgradeneeded=function(e){
+                var db=e.target.result;
+                if(!db.objectStoreNames.contains('students')){
+                    db.createObjectStore('students',{autoIncrement: true});
+                }
+                console.log('DB version changed to '+version);
+            };
+        }
+        var students=[{
+            id:1001,
+            name:"Byron",
+            age:24
+        },{
+            id:1002,
+            name:"Frank",
+            age:30
+        },{
+            id:1003,
+            name:"Aaron",
+            age:26
+        }];
+        function addData(db,storeName){
+            var transaction=db.transaction(storeName,'readwrite');
+            var store=transaction.objectStore(storeName);
+
+            for(var i=0;i<students.length;i++){
+                store.add(students[i]);
+            }
+        }
+        function getDataByKey(db,storeName,value){
+            var transaction=db.transaction(storeName,'readwrite');
+            var store=transaction.objectStore(storeName);
+            var request=store.get(value);
+            request.onsuccess=function(e){
+                var student=e.target.result;
+                console.log(student.name);
+            };
+        }
+        function updateDataByKey(db,storeName,value){
+            var transaction=db.transaction(storeName,'readwrite');
+            var store=transaction.objectStore(storeName);
+            var request=store.get(value);
+            request.onsuccess=function(e){
+                var student=e.target.result;
+                student.age=35;
+                store.put(student);
+            };
+        }
+        function updateDataByKey(db,storeName,value){
+            var transaction=db.transaction(storeName,'readwrite');
+            var store=transaction.objectStore(storeName);
+            var request=store.get(value);
+            request.onsuccess=function(e){
+                var student=e.target.result;
+                student.age=35;
+                store.put(student);
+            };
+        }
+        function clearObjectStore(db,storeName){
+            var transaction=db.transaction(storeName,'readwrite');
+            var store=transaction.objectStore(storeName);
+            store.clear();
+        }
+        window.addEventListener('load', function(){openDB(myDB.name, myDB.version);}, false);
+    </script>
+</body>
+</html>

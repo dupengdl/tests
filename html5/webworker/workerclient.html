@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title>Shared worker client</title>
+    <style></style>
+</head>
+<body>
+    Current average: <output id="average"></output>
+    <br/>
+    <input id="numberToSend" type="number"/>
+    <button id="btnSend">Send number to shared worker</button>
+    <hr/>
+    Message from Shared worker: <br/>
+    <section id="log"></section>
+    <script>
+        var byId = function(id){return document.getElementById(id);};
+        var sworker = null;
+        function init(){
+            var logOutput = byId('log');
+            var btn = byId('btnSend');
+            btn.addEventListener('click', sendNumber, false);
+            sworker = new SharedWorker('shareWorker.js');
+            sworker.port.onmessage = function(msg){
+                var data = msg.data;
+                switch (data.msgType){
+                    case 'LOG':
+                        logOutput.innerHTML += data.msgText + '<br>';
+                        break;
+                    case 'AVE':
+                        var aveOutput = byId('average');
+                        aveOutput.innerHTML = data.aveValue;
+                        logOutput.innerHTML += data.msgText + '<br>';
+                        break;
+                }
+            };
+        }
+        function sendNumber(){
+            var numToSend = byId('numberToSend').value;
+            var reg = new RegExp("^[0-9]*$");
+            if(numToSend == "" || !reg.test(numToSend)){
+                alert("Please input number");
+                return false;
+            }
+            sworker.port.postMessage(numToSend);
+            byId('numberToSend').value = '';
+        }
+        window.addEventListener('load', init, false);
+    </script>
+</body>
+</html>

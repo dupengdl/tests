@@ -1,0 +1,13 @@
+CACHE MANIFEST
+#Version 1.4
+
+CACHE:
+resources/online.js
+resources/offline.css
+
+NETWORK:
+resources/online.css
+
+FALLBACK:
+resources/online.png resources/offline.png
+resources/online.html resources/offline.html

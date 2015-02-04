@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+    <title>closure测试</title>
+</head>
+<body>
+<div id="info"></div>
+<script>
+	var arr = ['第一次','第二次','第三次'];
+ 
+	for(var i=0;i<arr.length;i++){
+	    (function(num){
+	        setTimeout(function(){
+	            document.getElementById('info').innerHTML = arr[num];
+	        },num*10000);
+	     })(i);
+	}
+</script>
+</body>
+</html>

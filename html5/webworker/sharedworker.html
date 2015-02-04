@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <title>Shared worker across pages</title>
+    <style>
+        div {float: left;width: 33.33%;height: 500px;}
+        iframe {width: 100%;height: 100%;}
+    </style>
+</head>
+<body>
+    <div>
+        Client page 1<iframe src="workerclient.html"></iframe>
+    </div>
+    <div>
+        Client page 2<iframe src="workerclient.html"></iframe>
+    </div>
+    <div>
+        Client page 3<iframe src="workerclient.html"></iframe>
+    </div>
+</body>
+</html>
