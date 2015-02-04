@@ -28,5 +28,53 @@
     <div class="single_line_div">
         <a href="./moji_weixin/index.html" target="_blank">墨迹天气微信展示页</a>
     </div>
+    <script>
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            //img.src = 'http://192.168.1.102/log.php?msg=readyOK';
+            window.shareData = {
+                "timeLineLink": "http://wx.mojichina.com/index/actions/index?referer=weixinTimeline",
+                "sendFriendLink": "http://wx.mojichina.com/index/actions/index?referer=weixinFriend",
+                "fTitle": "墨迹天气V5，25台iPhone6等你抽！",
+                "fContent": "@墨迹天气 送25台iPhone6，体验新版5.0就有机会抽奖哦！",
+                "img":"http://cdn2.moji002.com/webpush/share_h5icon.jpg"
+            };
+            // 发送给好友
+            WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+                WeixinJSBridge.invoke('sendAppMessage', {
+                    "img_url": window.shareData.img,
+                    "img_width": "100",
+                    "img_height": "100",
+                    "link": window.shareData.sendFriendLink,
+                    "desc": window.shareData.fContent,
+                    "title": window.shareData.fTitle
+                }, function (res) {
+                    //img.src = 'http://192.168.1.102/log.php?msg='+res.err_msg;
+                    if(res.err_msg == "send_app_msg:confirm" || res.err_msg == "send_app_msg:ok"){
+                        //alert('发送成功');
+                        window.location.href = 'http://wx.mojichina.com/index/actions/getcode/type/html';
+                    }
+                    _report('send_msg', res.err_msg);
+                })
+            });
+            // 分享到朋友圈
+            WeixinJSBridge.on('menu:share:timeline', function (argv) {
+                WeixinJSBridge.invoke('shareTimeline', {
+                    "img_url": window.shareData.img,
+                    "img_width": "100",
+                    "img_height": "100",
+                    "link":window.shareData.sendFriendLink,
+                    "desc": window.shareData.fTitle,
+                    "title": window.shareData.fTitle
+                }, function (res) {
+                    //img.src = 'http://192.168.1.102/log.php?msg='+res.err_msg;
+                    if(res.err_msg == "share_timeline:ok"){
+                        window.location.href = 'http://wx.mojichina.com/index/actions/getcode/type/html';
+                    }
+                    _report('timeline', res.err_msg);
+                });
+            });
+
+        }, false)
+    </script>
 </body>
 </html>
