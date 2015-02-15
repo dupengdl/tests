@@ -1,19 +1,18 @@
 <!DOCTYPE html>
+<!-- saved from url=(0056)http://cqrc1.sh.thehante.com/activities/write/write.html -->
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no, email=no">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,target-densitydpi=medium-dpi">
     <noscript>&lt;meta http-equiv="refresh" content="0; url=unsupported.html"&gt;</noscript>
     <title>写个字，测一年运势，重庆人都在玩儿，吃皮的狠！</title>
-    <link href="write.css" rel="stylesheet">
+    <link href="http://cqrc1.sh.thehante.com/css/main.css" rel="stylesheet">
+    <link href="http://cqrc1.sh.thehante.com/activities/write/write.css" rel="stylesheet">
     <style>body {
-        margin: 0;
-        padding: 0;
-        text-align: center;
-        overflow: hidden;
         background-color: #D52720;
     }
 
@@ -47,6 +46,8 @@
 </section>
 <div class="scrim loading-view"
      style="position:fixed;top:0;right:0;left:0;bottom:0;background-color:rgba(0,0,0,0.5);z-index: 2000000;display:none"></div>
+<script type="text/javascript" src="./写个字，测一年运势，重庆人都在玩儿，吃皮的狠！_files/spin.js"></script>
+<script type="text/javascript" src="./写个字，测一年运势，重庆人都在玩儿，吃皮的狠！_files/jweixin-1.0.0.js"></script>
 <script>function init() {
     localStorage ? localStorage["writeimage-j"] && localStorage["writeimage-a"] && localStorage["writeimage-query"] && ($$ = JSON.parse(decodeURIComponent(localStorage["writeimage-j"])), $$.api = JSON.parse(decodeURIComponent(localStorage["writeimage-a"])), $$.query = JSON.parse(decodeURIComponent(localStorage["writeimage-query"]))) : alert("系统不支持")
 }
@@ -63,7 +64,7 @@ function initShare() {
 }
 "cqrc.sh.thehante.com" == location.host && (location.href = location.protocol + "//cqrc1.sh.thehante.com" + location.pathname);
 var $$ = {};
-init(), document.getElementsByClassName("trademark")[0].onclick = function () {
+init(), $$.api && $$.api.openid || (location.href = location.protocol + "//" + location.host + "/activities/write/index.html"), document.getElementsByClassName("trademark")[0].onclick = function () {
     location.href = location.protocol + "//" + location.host + "/trademark.html"
 }, $$.SHARE_TITLE = "写个字，测一年运势，重庆人都在玩儿，吃皮的狠！", $$.SHARE_DESC = "写个字，测一年运势，重庆人都在玩儿，吃皮的狠！", $$.SHARE_IMG_URL = location.protocol + "//" + location.host + "/activities/write/images/share.jpg", initShare(), $$.loading = {done: !0, times: 0, start: function () {
     this.times++, this.done && (this.el = document.getElementsByClassName("scrim"), this.el[0].style.display = "block", this.done = !1, this.spinner.spin(this.el[0]))
