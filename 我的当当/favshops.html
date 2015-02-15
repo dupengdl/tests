@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>关注店铺</title>
+    <link rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="css/style2.css"/>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="back"></a>
+        <div class="h_label">关注店铺</div>
+        <a href="#" class="menu">编辑</a>
+    </header>
+    <section class="content">
+        <ul class="shop-list">
+            <li class="shop-item">
+                <div class="item-wrap">
+                    <img class="s-logo" src="./image/logo.png" alt="店铺logo"/>
+                    <div class="s-info">
+                        <div class="s-name">蔓茵服饰配件旗舰店</div>
+                        <div class="s-rank">
+                            <b class="stared"></b>
+                            <b class="stared"></b>
+                            <b class="stared"></b>
+                            <b class="stared"></b>
+                            <b class="half-stared"></b>
+                        </div>
+                    </div>
+                    <div class="s-delete"></div>
+                </div>
+            </li>
+            <li class="shop-item">
+                <div class="item-wrap">
+                    <img class="s-logo" src="./image/logo.png" alt="店铺logo"/>
+                    <div class="s-info">
+                        <div class="s-name">蔓茵服饰配件旗舰店</div>
+                        <div class="s-rank">
+                            <b class="stared"></b>
+                            <b class="stared"></b>
+                            <b class="stared"></b>
+                            <b class="half-stared"></b>
+                            <b></b>
+                        </div>
+                    </div>
+                    <div class="s-delete"></div>
+                </div>
+            </li>
+            <li class="shop-item">
+                <div class="item-wrap">
+                    <img class="s-logo" src="./image/logo.png" alt="店铺logo"/>
+                    <div class="s-info">
+                        <div class="s-name">蔓茵服饰配件旗舰店</div>
+                        <div class="s-rank">
+                            <b class="stared"></b>
+                            <b class="stared"></b>
+                            <b class="stared"></b>
+                            <b class="half-stared"></b>
+                            <b></b>
+                        </div>
+                    </div>
+                    <div class="s-delete"></div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <div class="mask"></div>
+    <div class="alert hidden">
+        <h3 class="a-title">温馨提示</h3>
+        <p class="a-desc">删除成功</p>
+        <button class="a-btn">确定</button>
+    </div>
+    <div class="confirm hidden">
+        <p class="c-desc">要删除关注的店铺吗？</p>
+        <div class="btn-wrap">
+            <button class="c-btn">取消</button>
+            <button class="c-btn">确定</button>
+        </div>
+    </div>
+    <script src="../js/libs/jquery-1.11.0.min.js"></script>
+    <script>
+        $(".s-delete").click(function(e){
+            $('.mask').show();
+            $('.confirm').show();
+        });
+        $(".c-btn").click(function(e){
+            setTimeout(function(){
+                $('.confirm').hide();
+                $('.mask').show();
+                $('.alert').show();
+            },1000);
+        });
+        $(".a-btn").click(function(e){
+            $('.mask').hide();
+            $('.alert').hide();
+        });
+    </script>
+</body>
+</html>

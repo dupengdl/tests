@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>我的当当</title>
+    <link rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="back">返回</a>
+        <div class="h_label">我的当当</div>
+        <a href="#" class="menu active"></a>
+        <nav class="t-nav active">
+            <ul>
+                <li><a href="#home" class="home">首页</a></li>
+                <li><a href="#search" class="search">搜索</a></li>
+                <li><a href="#category" class="category">分类</a></li>
+                <li><a href="#cart" class="cart">购物车</a></li>
+                <li><a href="#user" class="user">我的当当</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="content">
+        <header class="user-info">
+            <section class="user-basic">
+                <img class="user-avatar" src="image/default-avatar.png" alt="用户"/>
+                <div class="user-name">火上封喉</div>
+                <div class="member-badge">钻石会员</div>
+                <section class="remaining">
+                    <em>余额&nbsp;0000.0</em>
+                    <em>礼品卡&nbsp;0.00</em>
+                    <em>积分&nbsp;0.00</em>
+                </section>
+            </section>
+            <section class="user-stat">
+                <a href="#"><em>12980</em>收藏的商品</a>
+                <a href="#"><em>48</em>收藏的店铺</a>
+                <a href="#"><em>9271</em>历史足迹</a>
+            </section>
+        </header>
+        <section class="f-section order-section">
+            <a class="slide-link" href="#">
+                <img src="images/m-orders.png"/>
+                全部订单
+                <em>查看全部购买商品</em>
+            </a>
+            <nav class="order-nav">
+                <ul>
+                    <li><a href="#" class="pd-pay">待付款</a></li>
+                    <li><a href="#" class="pd-receipt">待收货</a></li>
+                    <li><a href="#" class="pd-comment">待评价<sup class="badge">3</sup></a></li>
+                    <li><a href="#" class="pd-return">退换货</a></li>
+                </ul>
+            </nav>
+        </section>
+        <section class="f-section">
+            <a class="slide-link" href="#">
+                <img src="images/m-coupons.png"/>
+                我的礼券
+            </a>
+            <a class="slide-link badged" href="#">
+                <img src="images/m-presents.png"/>
+                我的礼品卡
+            </a>
+            <a class="slide-link" href="#">
+                <img src="images/m-charge.png"/>
+                手机充值
+            </a>
+            <a class="slide-link" href="#">
+                <img src="images/m-location.png"/>
+                收货地址
+            </a>
+            <a class="slide-link" href="#">
+                <img src="images/m-safety.png"/>
+                管理支付密码
+            </a>
+        </section>
+        <section class="f-section">
+            <a class="slide-link" href="#">
+                <img src="images/m-cs.png"/>
+                客户反馈
+            </a>
+        </section>
+    </section>
+    <footer class="footer">
+        <form class="search-form" method="get" action="" target="_parent">
+            <input class="s-search" type="search" name="keyword" value="" autocomplete="off" placeholder="请输入商品名称">
+            <input class="s-submit" type="submit" value=""/>
+        </form>
+        <nav class="b-nav">
+            <p>
+                <a href="#">精简版</a>
+                <a href="#" class="active">触屏版</a>
+                <a href="#">电脑版</a>
+            </p>
+            <p>
+                <a href="#">提建议</a>
+                <a href="#">客&nbsp;&nbsp;&nbsp;&nbsp;服</a>
+                <a href="#">帮&nbsp;&nbsp;&nbsp;&nbsp;助</a>
+            </p>
+        </nav>
+        <section class="status-bar">
+            <a class="user" href="#user">火上封喉</a>
+            <a class="exit" href="#exit">退出</a>
+            <a class="top" href="#top">TOP</a>
+        </section>
+        <section class="copyright">
+            <p>
+                Copyright 2014 m.dangdang.com<br/>
+                京ICP证041189号 2015-02-02 17:05:41
+            </p>
+        </section>
+    </footer>
+    <script src="../js/libs/jquery-1.11.0.min.js"></script>
+    <script>
+        $(".header .menu").click(function(e){
+            if($(this).hasClass("active")){
+                $(this).removeClass("active");
+                $(".t-nav").removeClass("active");
+            }else{
+                $(this).addClass("active");
+                $(".t-nav").addClass("active");
+            }
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
