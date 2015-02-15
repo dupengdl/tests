@@ -4,7 +4,7 @@
 $(function(){
 	var b = $(".slide-page").pageSlider();
     var App = new app(), inAPP = App.inApp();
-    $(b).on("enter",function () {
+    b.on("enter",function () {
         $(this).addClass("active");
     }).on("leave", function () {
         $(this).removeClass("active");

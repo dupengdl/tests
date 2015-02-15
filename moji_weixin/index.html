@@ -38,22 +38,12 @@
         <div class="logo ta-c"><img src="images/load-02.png" width="47" height="31" alt="墨迹天气"></div>
         <div class="process-box">
             <div class="process"></div>
-            <div class="process-percent" style="width: 100%;"></div>
+            <div class="process-percent" style="width: 0"></div>
         </div>
         <p>小墨同学努力加载中…</p>
     </div>
 </div>
-<!-- style="display: none; opacity:0; -->
-<div class="slide-mainbody" style="opacity: 1;">
-<script>
-    /* 微信适配 高度 */
-    var ua = navigator.userAgent.toLowerCase();
-    if (($(window).height() == 568 || $(window).height() == 504) && ua.match(/MicroMessenger/i) == "micromessenger") {
-        $(".slide-mainbody,#loading-page").height("504px");
-
-    }
-
-</script>
+<div class="slide-mainbody" style="display: none; opacity:0;">
 <div class="slide-page page0" style="z-index: 22; visibility: visible;">
     <div class="title bounceIn"><img src="images/page0-02.png" width="286" height="165"></div>
     <div class="middle active"><img src="images/page0-01.png" width="260" height="186"></div>
