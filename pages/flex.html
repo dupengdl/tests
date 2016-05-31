@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Flexbox layout test</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .holygrail {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+      background: #e0e0e0;
+    }
+
+    header {
+      flex: 0 0 40px;
+      background: #c4e3f3;
+    }
+
+    footer {
+      flex: 0 0 80px;
+      background: #eb5800;
+    }
+
+    .holygrail-body {
+      display: flex;
+      flex: 1;
+      background: #008000;
+    }
+
+    .holygrail-content {
+      flex: 1;
+      background: #510198;
+    }
+
+    .holygrail-nav, .holygrail-ads {
+      flex: 0 0 180px;
+      background: #fbf069;
+    }
+
+    .holygrail-nav {
+      order: -1;
+    }
+  </style>
+</head>
+<body>
+<div class="holygrail">
+  <header>页头</header>
+  <div class="holygrail-body">
+    <main class="holygrail-content">内容</main>
+    <nav class="holygrail-nav">左导航</nav>
+    <aside class="holygrail-ads">右边栏</aside>
+  </div>
+  <footer>页脚</footer>
+</div>
+</body>
+</html>
