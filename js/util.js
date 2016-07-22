@@ -59,3 +59,24 @@ var $_GET = (function(){
         return {};
     }
 })();
+
+//search string transform to json object
+function qStrToJson(queryStr){
+    if(typeof(queryStr) == 'string'){
+        //针对编辑器中出现的单引号未被转义的情况做特殊处理
+        var u = queryStr.replace(/%26%2339%3B/g, '\'');
+        u = u.split('&');
+        var get = {};
+        for(var i in u){
+            var j = u[i].split('=');
+            if(j[0] in get) {
+                get[j[0]] = [].concat(get[j[0]], decodeURIComponent(j[1]));
+            } else {
+                get[j[0]] = decodeURIComponent(j[1]);
+            }
+        }
+        return get;
+    } else {
+        return {};
+    }
+}
