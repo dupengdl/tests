@@ -98,8 +98,8 @@
                 map.setCenter(newLatLng);
             }
             //update display
-            document.getElementById('myLat').innerHTML = posLat.fixedTo(8);
-            document.getElementById('myLng').innerHTML = posLng.fixedTo(8);
+            document.getElementById('myLat').innerHTML = posLat.toFixed(8);
+            document.getElementById('myLng').innerHTML = posLng.toFixed(8);
             watchStatus.innerHTML = 'Updated position (#' + path.getLength() + ')';
             //set the last coords to the new coords
             lastLatLng = newLatLng;
