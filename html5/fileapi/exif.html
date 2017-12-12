@@ -39,12 +39,12 @@
                         var orientation;
                         //vefiry file size
                         if(file.size<sizeLimitBytes){
-                            EXIF.getData(file, function() {
+                            EXIF.getData(file, (function(aFile) {
                                 var exifData = EXIF.pretty(this);
                                 if (exifData) {
                                     orientation = EXIF.getTag(this, 'Orientation');
                                     var img = document.createElement("img");
-                                    img.file = file;
+                                    img.file = aFile;
                                     img.orientation = orientation;
                                     img.className = 'unhighlight';
                                     img.addEventListener('mouseover', showFile, false);
@@ -55,11 +55,11 @@
                                     var reader = new FileReader();
                                     reader.onload = (function(aImg){return function(e){aImg.src = e.target.result}})(img);
                                     //read file as data url for the image
-                                    reader.readAsDataURL(file);
-                                        } else {
-                                            alert("No EXIF data found in image '" + file.name + "'.");
-                                        }
-                                    });
+                                    reader.readAsDataURL(aFile);
+                                } else {
+                                    alert("No EXIF data found in image '" + file.name + "'.");
+                                }
+                            })(file));
                         }else{
                             //file is too big
                             alert(file.name + " is larger than " + sizeLimit + "KB.");
