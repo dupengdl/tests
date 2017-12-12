@@ -43,25 +43,23 @@
                                 var exifData = EXIF.pretty(this);
                                 if (exifData) {
                                     orientation = EXIF.getTag(this, 'Orientation');
-                                    console.log(orientation);
-                                    // console.log(exifData);
-                                } else {
-                                    alert("No EXIF data found in image '" + file.name + "'.");
-                                }
-                            });
-                            var img = document.createElement("img");
-                            img.file = file;
-                            img.orientation = orientation;
-                            img.className = 'unhighlight';
-                            img.addEventListener('mouseover', showFile, false);
-                            img.addEventListener('mouseout', clearFile, false);
-                            imgPanel.appendChild(img);
+                                    var img = document.createElement("img");
+                                    img.file = file;
+                                    img.orientation = orientation;
+                                    img.className = 'unhighlight';
+                                    img.addEventListener('mouseover', showFile, false);
+                                    img.addEventListener('mouseout', clearFile, false);
+                                    imgPanel.appendChild(img);
 
-                            //create file reader
-                            var reader = new FileReader();
-                            reader.onload = (function(aImg){return function(e){aImg.src = e.target.result}})(img);
-                            //read file as data url for the image
-                            reader.readAsDataURL(file);
+                                    //create file reader
+                                    var reader = new FileReader();
+                                    reader.onload = (function(aImg){return function(e){aImg.src = e.target.result}})(img);
+                                    //read file as data url for the image
+                                    reader.readAsDataURL(file);
+                                        } else {
+                                            alert("No EXIF data found in image '" + file.name + "'.");
+                                        }
+                                    });
                         }else{
                             //file is too big
                             alert(file.name + " is larger than " + sizeLimit + "KB.");
