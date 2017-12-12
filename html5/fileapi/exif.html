@@ -36,12 +36,13 @@
                     var file = files[i];
                     //verify file type
                     if(file.type.match(imageType)){
+                        var orientation;
                         //vefiry file size
                         if(file.size<sizeLimitBytes){
                             EXIF.getData(file, function() {
                                 var exifData = EXIF.pretty(this);
                                 if (exifData) {
-                                    var orientation = EXIF.getTag(this, 'Orientation');
+                                    orientation = EXIF.getTag(this, 'Orientation');
                                     console.log(orientation);
                                     // console.log(exifData);
                                 } else {
@@ -50,6 +51,7 @@
                             });
                             var img = document.createElement("img");
                             img.file = file;
+                            img.orientation = orientation;
                             img.className = 'unhighlight';
                             img.addEventListener('mouseover', showFile, false);
                             img.addEventListener('mouseout', clearFile, false);
@@ -81,12 +83,14 @@
             this.className = 'highlight';
             var fileAttributes = document.getElementById('fileAttributes');
             var file = this.file;
+            var orientation = this.orientation;
             //create output
             var output = 'File info:<br/>';
             output += 'name: ' + file.name + '<br/>';
             output += 'type: ' + file.type + '<br/>';
             output += 'size: ' + (file.size / 1024).toFixed(2) + 'KB<br/>';
             output += 'last modified date: ' + file.lastModifiedDate + '<br/>';
+            output += 'orientation: ' + orientation + '<br/>';
 
             fileAttributes.innerHTML = output;
         }
