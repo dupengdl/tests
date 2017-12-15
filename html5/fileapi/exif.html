@@ -11,9 +11,13 @@
     </style>
 </head>
 <body>
-    <h1>Select some images to preview.</h1>
+    <h1>Select some images or input image urls to preview.</h1>
     <section>
-        <input id="input" type="file" multiple onchange="handleFiles(this.files)"/>
+        <input type="file" multiple onchange="handleFiles(this.files)"/>
+        <div class="flex">
+            <input id="input" type="text"/>
+            <button onclick="handleUrls()">preview</button>
+        </div>
     </section>
     <br/>
     <section id="imgPanel"></section>
