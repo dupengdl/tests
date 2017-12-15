@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>Filereader image preview</title>
+    <title>Image (exif) info viewer</title>
     <style>
         .highlight, .unhighlight {max-height: 100px;max-width: 100px;border-radius: 5px;margin: 10px;}
         .highlight {border: 5px solid #6f0;}
@@ -15,7 +15,7 @@
     <section>
         <input type="file" multiple onchange="handleFiles(this.files)"/>
         <div class="flex">
-            <input id="input" type="text"/>
+            <textarea id="input" cols="30" rows="10" placeholder="divide image urls with 'Enter'"></textarea>
             <button onclick="handleUrls()">preview</button>
         </div>
     </section>
@@ -40,7 +40,6 @@
                     var file = files[i];
                     //verify file type
                     if(file.type.match(imageType)){
-                        var orientation;
                         //vefiry file size
                         if(file.size<sizeLimitBytes){
                             EXIF.getData(file, (function(aFile) {
@@ -49,7 +48,8 @@
                                     if (!exifData) {
                                         alert("No EXIF data found in image '" + aFile.name + "'.");
                                     }
-                                    orientation = EXIF.getTag(this, 'Orientation');
+                                    console.log(exifData);
+                                    var orientation = EXIF.getTag(this, 'Orientation');
                                     var img = document.createElement("img");
                                     img.file = aFile;
                                     img.orientation = orientation;
@@ -78,6 +78,43 @@
                 //too many files selected
                 imgPanel.innerHTML = "Only " + fileLimit + " files can be selected at a time.";
             }
+        }
+
+        function handleUrls() {
+            var textarea = document.querySelector('#input');
+            var urlarray = [];
+            urlarray = textarea.value.replace('\r', '').split('\n');
+            var isValid = urlarray.every(function (url) {
+                return /\.(png|jpe?g|webp|gif)(.*)?$/i.test(url);
+            });
+            if (!isValid) {
+                alert('Please input valid image urls, like png jp(e)g webp or gif url');
+                return;
+            }
+            var imgPanel = document.querySelector("#imgPanel");
+            imgPanel.innerHTML = "";
+            urlarray.forEach(function (url, index) {
+                var img = document.createElement("img");
+                img.src = url;
+                img.onload = function () {
+                    EXIF.getData(img, (function(aImg) {
+                        return function () {
+                            var exifData = EXIF.pretty(this);
+                            if (!exifData) {
+                                alert("No EXIF data found in image '" + (index + 1) + "'.");
+                            }
+                            console.log(exifData);
+                            var orientation = EXIF.getTag(this, 'Orientation');
+                            aImg.file = {};
+                            aImg.orientation = orientation;
+                            aImg.className = 'unhighlight';
+                            aImg.addEventListener('mouseover', showFile, false);
+                            aImg.addEventListener('mouseout', clearFile, false);
+                            imgPanel.appendChild(img);
+                        };
+                    })(img));
+                };
+            });
         }
 
         //display file info when image moused over
