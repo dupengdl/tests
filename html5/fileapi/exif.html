@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Image (exif) info viewer</title>
+    <style>
+        .flex {display: flex;margin-top:20px;}
+        .input {width: 200px;}
+        .highlight, .unhighlight {max-height: 200px;max-width: 200px;border-radius: 5px;margin: 10px;}
+        .highlight {border: 5px solid #6f0;}
+        .unhighlight {border: 5px solid #000;}
+    </style>
+</head>
+<body>
+    <h1>Select some images or input image urls to preview.</h1>
+    <section>
+        <input type="file" multiple onchange="handleFiles(this.files)"/>
+        <div class="flex">
+            <input id="input" class="input" placeholder="enter image url"/>
+            <button onclick="handleUrls()">preview</button>
+            <button onclick="clearPanel()">clear</button>
+        </div>
+    </section>
+    <br/>
+    <section id="imgPanel"></section>
+    <section id="fileAttributes"></section>
+    <script type="text/javascript" src="exif.js"></script>
+    <script>
+        function handleFiles(files) {
+            // defaults options
+            var fileLimit = 10,
+                sizeLimit = 10000,
+                imageType = /image.*/;
+            var imgPanel = document.getElementById("imgPanel");
+            imgPanel.innerHTML = "";
+
+            //set file size limit
+            var sizeLimitBytes = sizeLimit*1024;
+            //check file count
+            if(files.length < fileLimit){
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    //verify file type
+                    if(file.type.match(imageType)){
+                        //vefiry file size
+                        if(file.size<sizeLimitBytes){
+                            EXIF.getData(file, (function(aFile) {
+                                return function () {
+                                    var exifData = EXIF.pretty(this);
+                                    if (!exifData) {
+                                        alert("No EXIF data found in image '" + aFile.name + "'.");
+                                    }
+                                    console.log(exifData);
+                                    var orientation = EXIF.getTag(this, 'Orientation');
+                                    var img = document.createElement("img");
+                                    img.file = aFile;
+                                    img.orientation = orientation;
+                                    img.className = 'unhighlight';
+                                    img.addEventListener('mouseover', showFile, false);
+                                    img.addEventListener('mouseout', clearFile, false);
+                                    imgPanel.appendChild(img);
+
+                                    //create file reader
+                                    var reader = new FileReader();
+                                    reader.onload = (function(aImg){return function(e){aImg.src = e.target.result}})(img);
+                                    //read file as data url for the image
+                                    reader.readAsDataURL(aFile);
+                                };
+                            })(file));
+                        }else{
+                            //file is too big
+                            alert(file.name + " is larger than " + sizeLimit + "KB.");
+                        }
+                    }else{
+                        //file is not an image
+                        alert(file.name + " is not an image.");
+                    }
+                }
+            }else{
+                //too many files selected
+                imgPanel.innerHTML = "Only " + fileLimit + " files can be selected at a time.";
+            }
+        }
+
+        function handleUrls() {
+            var input = document.querySelector('#input');
+            var url = input.value;
+            if (!/\.(png|jpe?g|webp|gif)([^\s]*)?$/i.test(url)) {
+                alert('Please input valid image urls, like png jp(e)g webp or gif url');
+                return;
+            }
+            var imgPanel = document.querySelector("#imgPanel");
+            var img = document.createElement("img");
+            img.src = url;
+            img.className = 'unhighlight';
+            img.file = {};
+            img.addEventListener('mouseover', showFile, false);
+            img.addEventListener('mouseout', clearFile, false);
+            imgPanel.appendChild(img);
+            img.onload = function () {
+                EXIF.getData(img, (function(aImg) {
+                    return function () {
+                        var exifData = EXIF.pretty(this);
+                        if (!exifData) {
+                            alert("No EXIF data found in image " + (index + 1) + ".");
+                        }
+                        console.log(exifData);
+                        aImg.orientation = EXIF.getTag(this, 'Orientation');
+                    };
+                })(img));
+            };
+        }
+
+        //display file info when image moused over
+        function showFile(){
+            //highlight the current image
+            this.className = 'highlight';
+            var fileAttributes = document.getElementById('fileAttributes');
+            var file = this.file;
+            var orientation = this.orientation;
+            //create output
+            var output = 'File info:<br/>';
+            output += 'name: ' + file.name + '<br/>';
+            output += 'type: ' + file.type + '<br/>';
+            output += 'size: ' + (file.size / 1024).toFixed(2) + 'KB<br/>';
+            output += 'last modified date: ' + file.lastModifiedDate + '<br/>';
+            output += 'orientation: ' + orientation + '<br/>';
+
+            fileAttributes.innerHTML = output;
+        }
+        //reset info
+        function clearFile(){
+            //clear the file attributes panel
+            var fileAttributes = document.getElementById('fileAttributes');
+            fileAttributes.innerHTML = "";
+            this.className = 'unhighlight';
+        }
+        //clear image panel
+        function clearPanel(){
+            var input = document.querySelector('#input');
+            input.value = "";
+            var imgPanel = document.querySelector("#imgPanel");
+            imgPanel.innerHTML = "";
+        }
+    </script>
+</body>
+</html>
