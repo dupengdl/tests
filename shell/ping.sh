@@ -1,4 +1,4 @@
-for ip in 192.168.0.{1..255} ;
+for ip in 192.168.0.{1..10} ;
 do
     ping $ip -c 2 &> /dev/null ;
 
