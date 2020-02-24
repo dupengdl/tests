@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+  <title>小程序webview功能测试</title>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script>
+  var count = 0
+  function clickEvent() {
+    wx.miniProgram.postMessage({
+      data: {
+        msg: 'msg' + (++count)
+      }
+    })
+  }
+  </script>
+</head>
+<body>
+  <div>
+    小程序webview功能测试
+    <a href="javascript: clickEvent();" id="/test">postMessage事件</a>
+    <div id="ua"></div>
+    <script>document.querySelector('#ua').innerText = navigator.userAgent</script>
+  </div>
+</body>
+</html>
