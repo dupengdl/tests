@@ -51,7 +51,7 @@ function sleep(time) {
 function curry(fn) {
   return function next(...args) {
     if (fn.length === args.length) {
-      fn.apply(null, args)
+      return fn.apply(null, args)
     } else {
       return function(..._args) {
         return next(...args, ..._args)
