@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+  <title>微信webview关闭测试</title>
+  <style>
+    html {
+      -webkit-text-size-adjust: none;
+      -moz-text-size-adjust: none;
+    }
+  </style>
+  <script>
+  window.addEventListener("beforeunload", function (event) {
+    const confirmationMessage = "您确定要离开此页面吗？未保存的数据可能会丢失。";
+    event.returnValue = confirmationMessage;
+    // 为兼容旧版浏览器，同时返回提示信息
+    return confirmationMessage;
+});
+  </script>
+</head>
+<body>
+  <div>
+    微信webview关闭测试
+  </div>
+</body>
+</html>
